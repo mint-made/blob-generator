@@ -1,0 +1,109 @@
+#blob-canvas {
+  width: 500px;
+  height: 300px;
+  margin: 30px auto;
+  border: 3px solid #eeeeee;
+}
+.container {
+  margin: auto;
+  margin-bottom: 5px;
+  width: 500px;
+  height: 50px;
+  border: 2px dotted #eeeeee;
+  border-radius: 15px;
+}
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+.flex-space-around {
+  display: flex;
+  justify-content: space-around;
+}
+
+/* Single Sliders */
+.slider {
+  -webkit-appearance: none;
+  width: 95%;
+  height: 10px;
+  background: #e0e0e0;
+  outline: none;
+  -webkit-transition: 0.2s;
+  transition: opacity 0.2s;
+  border-radius: 5px;
+  margin: 5px 5%;
+}
+.slider:hover {
+  opacity: 1;
+}
+.slider:focus {
+  outline: none;
+}
+.slider:active {
+  outline: none;
+}
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  border-radius: 18px;
+  transition: width 0.2s, height 0.2s;
+  width: 20px;
+  height: 20px;
+}
+.slider::-webkit-slider-thumb {
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  border-radius: 18px;
+  transition: width 0.2s, height 0.2s;
+  -webkit-appearance: none;
+}
+.slider::-ms-track {
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  border-radius: 18px;
+  transition: width 0.2s, height 0.2s;
+}
+.slider-start::-webkit-slider-thumb {
+  background: #fbbaa0;
+  border: 3px #f98c61 solid;
+}
+.slider-start::-moz-range-thumb {
+  background: #fbbaa0;
+  border: 3px #f98c61 solid;
+}
+.slider-start::-ms-track {
+  background: #fbbaa0;
+  border: 3px #f98c61 solid;
+}
+
+/*buttons*/
+.btn {
+  display: inline-block;
+  font-weight: 700;
+  text-align: center;
+  vertical-align: middle;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  border: 2px solid black;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: 9px;
+  cursor: pointer;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.btn-x {
+  background-color: #eee;
+  border-color: rgb(83, 135, 212);
+  color: rgb(83, 135, 212);
+}
+.btn-x:hover {
+  background-color: rgb(83, 135, 212);
+  color: #eee;
+}
