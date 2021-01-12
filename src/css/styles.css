@@ -23,10 +23,7 @@
   justify-content: space-around;
 }
 path {
-  transition: all 1s ease;
-}
-#blob-z {
-  transition: all 5s;
+  transition: all 0.5s ease;
 }
 
 .slider {
