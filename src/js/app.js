@@ -24,12 +24,9 @@ const svgBlob = {
       },
     ];
     this.path.forEach((item) => {
-      const rnd = Math.random() / 3 + 1;
-      console.log(rnd);
-      console.log(item.point.x);
+      const rnd = Math.random() / 10 + 1;
       item.point.x = item.point.x * rnd;
       item.point.y = item.point.y * rnd;
-      console.log('x', item.point.x);
     });
     this.start = this.path[2].point;
     this.d = `M ${this.start.x},${this.start.y}
@@ -39,19 +36,35 @@ const svgBlob = {
         Z`;
   },
   generate() {
+    this.clearCanvas();
     this.userInput.corners = document.querySelector('#blob-size').value;
     const svgBlob = document.querySelector('#blob-z');
+    const canvasBoard = document.querySelector('#canvas-board');
     const blobA = new this.Blob(3);
-    console.log(svgBlob.getAttribute('d'));
-    console.log(blobA.d);
     svgBlob.setAttribute('d', blobA.d);
-    // svgBlob.setAttribute(
-    //   'd',
-    //   `M 43,26.5
-    // C28.9,49.3,  -27.9,49.1,   -44.2,26.2
-    // C-56.5,3.3,  -28.2,-42.4,  -5.2,-43.3
-    // C28.6,-42.2,  57.1,3.6,    43,26.5
-    // Z`
-    // );
+    blobA.path.forEach((item) => {
+      const svgCircle = this.generateSvgCircle(item.point.x, item.point.y);
+      canvasBoard.appendChild(svgCircle);
+    });
+  },
+  generateSvgCircle(x, y, r = 1, color = 'red') {
+    // Returns svg <circle> html for DOM insertion
+    const circle = this.createSVGElement('circle');
+    circle.setAttributeNS(null, 'cx', x);
+    circle.setAttributeNS(null, 'cy', y);
+    circle.setAttributeNS(null, 'r', r);
+    circle.setAttributeNS(null, 'class', 'circle');
+    circle.setAttributeNS(null, 'fill', color);
+    circle.setAttributeNS(null, 'transform', 'translate(100 100)');
+    return circle;
+  },
+  createSVGElement(tag) {
+    return document.createElementNS('http://www.w3.org/2000/svg', tag);
+  },
+  clearCanvas() {
+    const circles = document.querySelectorAll('.circle');
+    circles.forEach((item) => {
+      item.remove();
+    });
   },
 };
