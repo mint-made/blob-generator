@@ -2,6 +2,7 @@ const svgBlob = {
   generated: [],
   userInput: {
     corners: 3,
+    markers: true,
   },
   Blob: function (corners) {
     this.corners = corners;
@@ -36,18 +37,46 @@ const svgBlob = {
         Z`;
   },
   generate() {
-    this.clearCanvas();
+    this.removeMarkers();
     this.userInput.corners = document.querySelector('#blob-size').value;
     const svgBlob = document.querySelector('#blob-z');
     const canvasBoard = document.querySelector('#canvas-board');
     const blobA = new this.Blob(3);
     svgBlob.setAttribute('d', blobA.d);
-    blobA.path.forEach((item) => {
-      const svgCircle = this.generateSvgCircle(item.point.x, item.point.y);
+    for (i = 0; i < 3; i++) {
+      const svgCircle = this.generateSvgCircle(
+        blobA.path[i].point.x,
+        blobA.path[i].point.y
+      );
       canvasBoard.appendChild(svgCircle);
-    });
+      const svgLine1 = this.generateSvgLine(
+        blobA.path[i].point.x,
+        blobA.path[i].point.y,
+        blobA.path[i].bez2.x,
+        blobA.path[i].bez2.y
+      );
+      canvasBoard.appendChild(svgLine1);
+      if (i < 1) {
+        const svgLine2 = this.generateSvgLine(
+          blobA.start.x,
+          blobA.start.y,
+          blobA.path[i].bez1.x,
+          blobA.path[i].bez1.y
+        );
+        canvasBoard.appendChild(svgLine2);
+      }
+      if (i > 0) {
+        const svgLine2 = this.generateSvgLine(
+          blobA.path[i - 1].point.x,
+          blobA.path[i - 1].point.y,
+          blobA.path[i].bez1.x,
+          blobA.path[i].bez1.y
+        );
+        canvasBoard.appendChild(svgLine2);
+      }
+    }
   },
-  generateSvgCircle(x, y, r = 1, color = 'red') {
+  generateSvgCircle(x, y, color = 'red', r = 1.75) {
     // Returns svg <circle> html for DOM insertion
     const circle = this.createSVGElement('circle');
     circle.setAttributeNS(null, 'cx', x);
@@ -58,13 +87,26 @@ const svgBlob = {
     circle.setAttributeNS(null, 'transform', 'translate(100 100)');
     return circle;
   },
+  generateSvgLine(x1, y1, x2, y2) {
+    //returns svg <line> html for DOM insertion
+    const line = this.createSVGElement('line');
+    line.setAttributeNS(null, 'x1', x1);
+    line.setAttributeNS(null, 'y1', y1);
+    line.setAttributeNS(null, 'x2', x2);
+    line.setAttributeNS(null, 'y2', y2);
+    line.setAttributeNS(null, 'class', 'line');
+    line.setAttributeNS(null, 'style', 'stroke:rgb(255,0,0);stroke-width:1');
+    line.setAttributeNS(null, 'transform', 'translate(100 100)');
+    return line;
+  },
   createSVGElement(tag) {
+    // Utility function for creating svg elements
     return document.createElementNS('http://www.w3.org/2000/svg', tag);
   },
-  clearCanvas() {
+  removeMarkers() {
     const circles = document.querySelectorAll('.circle');
-    circles.forEach((item) => {
-      item.remove();
-    });
+    const lines = document.querySelectorAll('.line');
+    circles.forEach((circle) => circle.remove());
+    lines.forEach((line) => line.remove());
   },
 };

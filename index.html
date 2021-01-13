@@ -9,38 +9,6 @@
     <title>SVG Blob Generator</title>
   </head>
   <body>
-    <div id="blob-canvas">
-      <svg width="500" height="300">
-        <rect
-          id="rectangle"
-          x="200"
-          y="100"
-          width="100"
-          height="100"
-          fill="blue"
-        />
-      </svg>
-    </div>
-    <div class="container">
-      <div class="flex-center">
-        <button class="btn btn-x" onclick="svgBlob.generate()">
-          Generate Blob
-        </button>
-      </div>
-    </div>
-    <div class="container flex-space-around">
-      <div class="flex-center"><h2>Size</h2></div>
-      <div class="flex-center">
-        <input
-          type="range"
-          min="3"
-          max="7"
-          value="3"
-          class="slider slider-start"
-          id="blob-size"
-        />
-      </div>
-    </div>
     <div>
       <svg viewBox="0 0 201 201" id="canvas-board">
         <path
@@ -86,6 +54,31 @@
         <rect width="100%" height="100%" fill="url(#grid)" />
       </svg>
     </div>
-    <script src="src/js/app.js"></script>
+    <div class="container">
+      <div class="flex-space-around">
+        <button class="btn btn-x" onclick="svgBlob.generate()">
+          Generate Blob
+        </button>
+        <button class="btn btn-x" onclick="svgBlob.removeMarkers()">
+          Remove markers
+        </button>
+      </div>
+    </div>
+    <div class="container flex-space-around">
+      <div class="flex-center"><h2>Size</h2></div>
+      <div class="flex-center">
+        <input
+          type="range"
+          min="3"
+          max="7"
+          value="3"
+          class="slider slider-start"
+          id="blob-size"
+        />
+      </div>
+    </div>
+    <script src="src/js/app.js">
+      window.onload = svgBlob.generate();
+    </script>
   </body>
 </html>
