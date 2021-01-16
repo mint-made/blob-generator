@@ -6,28 +6,28 @@ const svgBlob = {
   },
   Blob: function (corners) {
     this.corners = corners;
-    this.start = { x: 43, y: 26.5 };
+    this.start = { x: 43, y: 26 };
     this.path = [
       {
-        point: { x: -42.2, y: 26.2 },
-        bez1: { x: 28.9, y: 49.3 },
-        bez2: { x: -27.9, y: 49.1 },
+        point: { x: -42, y: 26 },
+        bez1: { x: 28, y: 49 },
+        bez2: { x: -27, y: 49 },
       },
       {
-        point: { x: -5.2, y: -43.3 },
-        bez1: { x: -56.5, y: 3.3 },
-        bez2: { x: -28.2, y: -42.4 },
+        point: { x: -5.2, y: -43 },
+        bez1: { x: -56, y: 3.3 },
+        bez2: { x: -28, y: -42 },
       },
       {
-        point: { x: 43, y: 26.5 },
-        bez1: { x: 28.6, y: -42.2 },
-        bez2: { x: 57.1, y: 3.6 },
+        point: { x: 43, y: 26 },
+        bez1: { x: 28, y: -42 },
+        bez2: { x: 57, y: 3 },
       },
     ];
     this.path.forEach((item) => {
       const rnd = Math.random() / 10 + 1;
-      item.point.x = item.point.x * rnd;
-      item.point.y = item.point.y * rnd;
+      item.point.x = (item.point.x * rnd).toFixed(0);
+      item.point.y = (item.point.y * rnd).toFixed(0);
     });
     this.start = this.path[2].point;
     this.d = `M ${this.start.x},${this.start.y}
@@ -75,6 +75,10 @@ const svgBlob = {
         canvasBoard.appendChild(svgLine2);
       }
     }
+    console.log(blobA);
+    canvasBoard.appendChild(
+      this.generateSvgCircle(blobA.start.x, blobA.start.y, 'green')
+    );
   },
   generateSvgCircle(x, y, color = 'red', r = 1.75) {
     // Returns svg <circle> html for DOM insertion
@@ -110,3 +114,8 @@ const svgBlob = {
     lines.forEach((line) => line.remove());
   },
 };
+
+// Onload functions
+svgBlob.generate();
+const canvas = document.querySelector('#canvas-board');
+canvas.appendChild(svgBlob.generateSvgCircle(0, 0, 'black'));
