@@ -3,12 +3,20 @@ function rndNoBetween(x, y, decimalPlaces = 0) {
   const randomNum = Math.random() * (y - x) + x;
   return randomNum;
 }
-function toggleMarkers() {
-  // Toggles visibility for markers of points and bezier lines
-  document.querySelectorAll('.circle, .line').forEach((marker) => {
-    marker.classList.toggle('display-none');
-  });
-}
+const markers = {
+  toggle() {
+    // Toggles visibility for markers of points and bezier lines
+    document.querySelectorAll('.circle, .line').forEach((marker) => {
+      marker.classList.toggle('display-none');
+    });
+  },
+  removeAll() {
+    // Removes markers for points and bezier lines
+    document.querySelectorAll('.circle, .line').forEach((marker) => {
+      marker.remove();
+    });
+  },
+};
 function toggleGrid() {
   // Toggles visibility for the grid behind the blob
   document.querySelector('#grid').classList.toggle('display-none');
@@ -25,4 +33,4 @@ function translateToFixed(pointsArray, decimalPoints) {
   return pointsArray;
 }
 
-export { rndNoBetween, toggleGrid, toggleMarkers, translateToFixed };
+export { rndNoBetween, toggleGrid, translateToFixed, markers };
