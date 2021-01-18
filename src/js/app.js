@@ -2,15 +2,12 @@ import { svgElement } from './svgElement.js';
 import { rndNoBetween, toggleGrid, markers } from './utility.js';
 
 const svg = {
-  displayMarkers: document.querySelector('#markers-btn').value,
   vertices: document.querySelector('#vertices-slider').value,
   initBlob() {
     // event listener to toggle the visibility of markers
     document
       .querySelector('#markers-btn')
       .addEventListener('click', function () {
-        console.log(this.displayMarkers);
-        this.displayMarkers = !this.displayMarkers;
         markers.toggle();
       });
     // event listener to toggle visibility of the grid
@@ -25,11 +22,11 @@ const svg = {
     // size event listener
     const vertices = document.querySelector('#vertices-slider');
     vertices.addEventListener('input', function () {
-      svg.generateBlob(vertices.value);
+      svg.generateBlob();
     });
 
     // Init generating a new SVG blob
-    this.generateBlob(this.vertices);
+    this.generateBlob();
   },
   generateBlobCoords(n) {
     // Generates n random points within n sections of the canvas
@@ -79,13 +76,15 @@ const svg = {
     pathArray.push('Z');
     return pathArray.join(' ');
   },
-  generateBlob(vertices = this.vertices) {
+  generateBlob(vertices = document.querySelector('#vertices-slider').value) {
     markers.removeAll();
     const canvas = document.querySelector('#canvas-board');
     const blob = new svg.Blob(vertices);
-    svg.generateMarkers(blob, canvas, svg.displayMarkers);
+    document.querySelector('#blob-z').setAttributeNS(null, 'd', blob.d);
+    svg.generateMarkers(blob, canvas);
+    markers.toggle();
   },
-  generateMarkers(blob, canvas, display = this.displayMarkers) {
+  generateMarkers(blob, canvas) {
     // generate svg lines for each bezier line
     blob.pointsArray.forEach((point) => {
       canvas.appendChild(
@@ -94,35 +93,19 @@ const svg = {
           point.bezier1.y,
           point.bezier2.x,
           point.bezier2.y,
-          'grey',
-          display
+          'grey'
         )
       );
       // generate svg circles for each point origin of the blob
       canvas.appendChild(
-        svgElement.generateCircle(
-          point.origin.x,
-          point.origin.y,
-          'blue',
-          display
-        )
+        svgElement.generateCircle(point.origin.x, point.origin.y, 'blue')
       );
       // generate svg circles for each bezier point
       canvas.appendChild(
-        svgElement.generateCircle(
-          point.bezier1.x,
-          point.bezier1.y,
-          'orange',
-          display
-        )
+        svgElement.generateCircle(point.bezier1.x, point.bezier1.y, 'orange')
       );
       canvas.appendChild(
-        svgElement.generateCircle(
-          point.bezier2.x,
-          point.bezier2.y,
-          'red',
-          display
-        )
+        svgElement.generateCircle(point.bezier2.x, point.bezier2.y, 'red')
       );
     });
     // generate an svg circle for the start point of the svg path.
@@ -130,14 +113,9 @@ const svg = {
       svgElement.generateCircle(
         blob.startCoords.origin.x,
         blob.startCoords.origin.y,
-        'green',
-        display
+        'green'
       )
     );
-
-    // select and update the svg blob path d
-    const blobSVG = document.querySelector('#blob-z');
-    document.querySelector('#blob-z').setAttributeNS(null, 'd', blob.d);
   },
   Blob: function (vertices) {
     this.pointsArray = svg.generateBlobCoords(vertices);
