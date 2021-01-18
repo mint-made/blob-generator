@@ -111,3 +111,7 @@
   background-color: rgb(83, 135, 212);
   color: #eee;
 }
+
+.display-none {
+  display: none;
+}
