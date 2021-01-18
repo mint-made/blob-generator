@@ -2,13 +2,14 @@ import { svgElement } from './svgElement.js';
 import { rndNoBetween, toggleGrid, markers } from './utility.js';
 
 const svg = {
-  displayMarkers: true,
+  displayMarkers: document.querySelector('#markers-btn').value,
   vertices: document.querySelector('#vertices-slider').value,
   initBlob() {
     // event listener to toggle the visibility of markers
     document
       .querySelector('#markers-btn')
       .addEventListener('click', function () {
+        console.log(this.displayMarkers);
         this.displayMarkers = !this.displayMarkers;
         markers.toggle();
       });
