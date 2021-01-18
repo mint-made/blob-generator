@@ -1,8 +1,30 @@
+import rndNoBetween from './utility.js';
+
 const svgBlob = {
   generated: [],
   userInput: {
     corners: 3,
     markers: true,
+  },
+  generatePoints(n) {
+    //Generates n random points within n sections of the canvas
+    //Returns n number of points in an array
+    const sectionAngle = (2 * Math.PI) / n;
+    const pointsArray = [];
+    for (let i = 0; i < n; i++) {
+      const angleToOrigin =
+        i * sectionAngle + rndNoBetween(0, sectionAngle / 3);
+      console.log('angletoorigin', angleToOrigin);
+      const radius = rndNoBetween(40, 60);
+      console.log('radius', radius);
+      const coordinate = {};
+      coordinate.x = radius * Math.sin(angleToOrigin);
+      coordinate.y = radius * Math.cos(angleToOrigin);
+      console.log(coordinate.x, coordinate.y);
+      pointsArray.push(coordinate);
+    }
+
+    return pointsArray;
   },
   Blob: function (corners) {
     this.corners = corners;
@@ -43,7 +65,7 @@ const svgBlob = {
     const canvasBoard = document.querySelector('#canvas-board');
     const blobA = new this.Blob(3);
     svgBlob.setAttribute('d', blobA.d);
-    for (i = 0; i < 3; i++) {
+    for (let i = 0; i < 3; i++) {
       const svgCircle = this.generateSvgCircle(
         blobA.path[i].point.x,
         blobA.path[i].point.y
@@ -75,7 +97,6 @@ const svgBlob = {
         canvasBoard.appendChild(svgLine2);
       }
     }
-    console.log(blobA);
     canvasBoard.appendChild(
       this.generateSvgCircle(blobA.start.x, blobA.start.y, 'green')
     );
@@ -91,7 +112,7 @@ const svgBlob = {
     circle.setAttributeNS(null, 'transform', 'translate(100 100)');
     return circle;
   },
-  generateSvgLine(x1, y1, x2, y2) {
+  generateSvgLine(x1, y1, x2, y2, color = 'red') {
     //returns svg <line> html for DOM insertion
     const line = this.createSVGElement('line');
     line.setAttributeNS(null, 'x1', x1);
@@ -99,7 +120,7 @@ const svgBlob = {
     line.setAttributeNS(null, 'x2', x2);
     line.setAttributeNS(null, 'y2', y2);
     line.setAttributeNS(null, 'class', 'line');
-    line.setAttributeNS(null, 'style', 'stroke:rgb(255,0,0);stroke-width:1');
+    line.setAttributeNS(null, 'style', `stroke:${color};stroke-width:1`);
     line.setAttributeNS(null, 'transform', 'translate(100 100)');
     return line;
   },
@@ -108,6 +129,7 @@ const svgBlob = {
     return document.createElementNS('http://www.w3.org/2000/svg', tag);
   },
   removeMarkers() {
+    // Removes markers for the blobs bezier lines and the cicles showing the blobs points
     const circles = document.querySelectorAll('.circle');
     const lines = document.querySelectorAll('.line');
     circles.forEach((circle) => circle.remove());
@@ -119,3 +141,9 @@ const svgBlob = {
 svgBlob.generate();
 const canvas = document.querySelector('#canvas-board');
 canvas.appendChild(svgBlob.generateSvgCircle(0, 0, 'black'));
+
+const pointArray = svgBlob.generatePoints(4);
+pointArray.forEach((point) => {
+  console.log(point);
+  canvas.appendChild(svgBlob.generateSvgCircle(point.x, point.y, 'blue'));
+});
