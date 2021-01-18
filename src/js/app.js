@@ -6,100 +6,77 @@ const svgBlob = {
     corners: 3,
     markers: true,
   },
+  init() {
+    this.corners = document.querySelector('#blob-size').value;
+  },
   generatePoints(n) {
-    //Generates n random points within n sections of the canvas
-    //Returns n number of points in an array
+    // Generates n random points within n sections of the canvas
+    // Returns n number of points in an array
     const sectionAngle = (2 * Math.PI) / n;
     const pointsArray = [];
     for (let i = 0; i < n; i++) {
-      const angleToOrigin =
-        i * sectionAngle + rndNoBetween(0, sectionAngle / 3);
-      console.log('angletoorigin', angleToOrigin);
-      const radius = rndNoBetween(40, 60);
-      console.log('radius', radius);
-      const coordinate = {};
-      coordinate.x = radius * Math.sin(angleToOrigin);
-      coordinate.y = radius * Math.cos(angleToOrigin);
-      console.log(coordinate.x, coordinate.y);
-      pointsArray.push(coordinate);
-    }
+      const point = {
+        origin: {},
+        bezier1: {},
+        bezier2: {},
+      };
+      // Generate point origin coordinate
+      let angleToOrigin = i * sectionAngle + rndNoBetween(0, sectionAngle / 3);
+      let radius = rndNoBetween(40, 60);
+      point.origin.x = radius * Math.sin(angleToOrigin);
+      point.origin.y = radius * Math.cos(angleToOrigin);
 
+      // Randomly generate 1st bezier point
+      angleToOrigin =
+        i * sectionAngle +
+        rndNoBetween(sectionAngle / 3, (2 * sectionAngle) / 3);
+      point.bezier1.x = radius * Math.sin(angleToOrigin);
+      point.bezier1.y = radius * Math.cos(angleToOrigin);
+
+      // Generate 2nd bezier point from the 1st bezier point.
+      point.bezier2.x = point.origin.x + (point.origin.x - point.bezier1.x);
+      point.bezier2.y = point.origin.y + (point.origin.y - point.bezier1.y);
+
+      pointsArray.push(point);
+    }
     return pointsArray;
   },
-  Blob: function (corners) {
-    this.corners = corners;
-    this.start = { x: 43, y: 26 };
-    this.path = [
-      {
-        point: { x: -42, y: 26 },
-        bez1: { x: 28, y: 49 },
-        bez2: { x: -27, y: 49 },
-      },
-      {
-        point: { x: -5.2, y: -43 },
-        bez1: { x: -56, y: 3.3 },
-        bez2: { x: -28, y: -42 },
-      },
-      {
-        point: { x: 43, y: 26 },
-        bez1: { x: 28, y: -42 },
-        bez2: { x: 57, y: 3 },
-      },
-    ];
-    this.path.forEach((item) => {
-      const rnd = Math.random() / 10 + 1;
-      item.point.x = (item.point.x * rnd).toFixed(0);
-      item.point.y = (item.point.y * rnd).toFixed(0);
+  translateToFixed(pointsArray, decimalPoints) {
+    pointsArray.forEach((point) => {
+      point.bezier1.x = point.bezier1.x.toFixed(decimalPoints);
+      point.bezier1.y = point.bezier1.y.toFixed(decimalPoints);
+      point.bezier2.x = point.bezier2.x.toFixed(decimalPoints);
+      point.bezier2.y = point.bezier2.y.toFixed(decimalPoints);
+      point.origin.x = point.origin.x.toFixed(decimalPoints);
+      point.origin.y = point.origin.y.toFixed(decimalPoints);
     });
-    this.start = this.path[2].point;
-    this.d = `M ${this.start.x},${this.start.y}
-        C${this.path[0].bez1.x},${this.path[0].bez1.y},${this.path[0].bez2.x},${this.path[0].bez2.y},${this.path[0].point.x},${this.path[0].point.y}
-        C${this.path[1].bez1.x},${this.path[1].bez1.y},${this.path[1].bez2.x},${this.path[1].bez2.y},${this.path[1].point.x},${this.path[1].point.y}
-        C${this.path[2].bez1.x},${this.path[2].bez1.y},${this.path[2].bez2.x},${this.path[2].bez2.y},${this.path[2].point.x},${this.path[2].point.y}
-        Z`;
+    return pointsArray;
   },
-  generate() {
-    this.removeMarkers();
-    this.userInput.corners = document.querySelector('#blob-size').value;
-    const svgBlob = document.querySelector('#blob-z');
-    const canvasBoard = document.querySelector('#canvas-board');
-    const blobA = new this.Blob(3);
-    svgBlob.setAttribute('d', blobA.d);
-    for (let i = 0; i < 3; i++) {
-      const svgCircle = this.generateSvgCircle(
-        blobA.path[i].point.x,
-        blobA.path[i].point.y
-      );
-      canvasBoard.appendChild(svgCircle);
-      const svgLine1 = this.generateSvgLine(
-        blobA.path[i].point.x,
-        blobA.path[i].point.y,
-        blobA.path[i].bez2.x,
-        blobA.path[i].bez2.y
-      );
-      canvasBoard.appendChild(svgLine1);
-      if (i < 1) {
-        const svgLine2 = this.generateSvgLine(
-          blobA.start.x,
-          blobA.start.y,
-          blobA.path[i].bez1.x,
-          blobA.path[i].bez1.y
-        );
-        canvasBoard.appendChild(svgLine2);
-      }
-      if (i > 0) {
-        const svgLine2 = this.generateSvgLine(
-          blobA.path[i - 1].point.x,
-          blobA.path[i - 1].point.y,
-          blobA.path[i].bez1.x,
-          blobA.path[i].bez1.y
-        );
-        canvasBoard.appendChild(svgLine2);
-      }
-    }
-    canvasBoard.appendChild(
-      this.generateSvgCircle(blobA.start.x, blobA.start.y, 'green')
+  Blob: function (vertices) {
+    this.pointsArray = svgBlob.translateToFixed(
+      svgBlob.generatePoints(vertices),
+      0
     );
+    this.start = this.pointsArray[this.pointsArray.length - 1];
+
+    const pathArray = [`M${this.start.origin.x},${this.start.origin.y}`];
+    let bezierOrigin = this.start;
+    for (let i = 0; i < this.pointsArray.length; i++) {
+      console.log(this.pointsArray[i]);
+      // Bezier2 point from the current point
+      pathArray.push(`C${bezierOrigin.bezier1.x},${bezierOrigin.bezier1.y}`);
+      // Bezier1 Point from the destination point
+      pathArray.push(
+        `${this.pointsArray[i].bezier2.x},${this.pointsArray[i].bezier2.y}`
+      );
+      // Point of the destination
+      pathArray.push(
+        `${this.pointsArray[i].origin.x},${this.pointsArray[i].origin.y}`
+      );
+      bezierOrigin = this.pointsArray[i];
+    }
+    pathArray.push('Z');
+    this.d = pathArray.join(' ');
   },
   generateSvgCircle(x, y, color = 'red', r = 1.75) {
     // Returns svg <circle> html for DOM insertion
@@ -138,12 +115,71 @@ const svgBlob = {
 };
 
 // Onload functions
-svgBlob.generate();
 const canvas = document.querySelector('#canvas-board');
-canvas.appendChild(svgBlob.generateSvgCircle(0, 0, 'black'));
 
-const pointArray = svgBlob.generatePoints(4);
-pointArray.forEach((point) => {
-  console.log(point);
-  canvas.appendChild(svgBlob.generateSvgCircle(point.x, point.y, 'blue'));
+const blob = new svgBlob.Blob(4);
+console.log(blob.origin);
+
+blob.pointsArray.forEach((point) => {
+  canvas.appendChild(
+    svgBlob.generateSvgCircle(point.origin.x, point.origin.y, 'blue')
+  );
+  canvas.appendChild(
+    svgBlob.generateSvgCircle(point.bezier1.x, point.bezier1.y, 'orange')
+  );
+  canvas.appendChild(
+    svgBlob.generateSvgCircle(point.bezier2.x, point.bezier2.y, 'red')
+  );
+  canvas.appendChild(
+    svgBlob.generateSvgLine(
+      point.bezier1.x,
+      point.bezier1.y,
+      point.bezier2.x,
+      point.bezier2.y,
+      'grey'
+    )
+  );
 });
+
+console.log(blob.d);
+
+canvas.appendChild(
+  svgBlob.generateSvgCircle(blob.start.origin.x, blob.start.origin.y, 'green')
+);
+
+function createPath(d) {
+  console.log(d);
+  const path = svgBlob.createSVGElement('path');
+  path.setAttributeNS(null, 'fill', '#8A3FFC');
+  path.setAttributeNS(null, 'd', d);
+  path.setAttributeNS(null, 'transform', 'translate(100 100)');
+  return blob;
+}
+
+const blobby = document.querySelector('#blob-z');
+blobby.setAttributeNS(null, 'd', blob.d);
+
+/*
+<path
+          id="blob-z"
+          class="blob"
+          fill="#8A3FFC"
+          d="M 43,26.5
+          C28.9,49.3,  -27.9,49.1,   -42.2,26.2
+          C-56.5,3.3,  -28.2,-42.4,  5.2,-43.3
+          C28.6,-42.2,  57.1,3.6,    43,26.5
+          Z"
+          transform="translate(100 100)"
+        />
+
+<path
+          id="blob-z"
+          class="blob"
+          fill="#8A3FFC"
+          d="M-56,4, C-73,-32, 36,24, 25,35, C-73,-32, 21,-48, 38,-36, C-73,-32, -39,41, -56,4 Z"
+          transform="translate(100 100)"
+        />
+
+
+
+*/
