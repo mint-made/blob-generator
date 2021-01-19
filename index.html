@@ -17,7 +17,17 @@
           fill="#8A3FFC"
           d=""
           transform="translate(100 100)"
-        />
+        >
+          <animate
+            attributeName="d"
+            dur="3s"
+            begin="1s"
+            repeatCount="1"
+            fill="freeze"
+            id="rect-2"
+          />
+        </path>
+
         <defs>
           <pattern
             id="tenthGrid"
@@ -74,5 +84,6 @@
       </div>
     </div>
     <script type="module" src="src/js/app.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.0/gsap.min.js"></script>
   </body>
 </html>

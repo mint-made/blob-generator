@@ -28,7 +28,10 @@
 }
 
 .blob {
-  transition: all 0.25s ease;
+  -webkit-transition: 1.5s;
+  -moz-transition: 1.5s;
+  -o-transition: 1.5s;
+  transition: 3s;
 }
 
 .slider {

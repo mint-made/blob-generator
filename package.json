@@ -1,0 +1,19 @@
+{
+  "name": "blob-generator",
+  "version": "1.0.0",
+  "description": "Tool to generate SVG blobs with different numbers of vertices",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mint-made/blob-generator.git"
+  },
+  "author": "mint-made",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mint-made/blob-generator/issues"
+  },
+  "homepage": "https://github.com/mint-made/blob-generator#readme"
+}

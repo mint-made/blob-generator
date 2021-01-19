@@ -41,7 +41,7 @@ const svg = {
       };
       // Generate point origin coordinate
       let angleToOrigin = i * sectionAngle + rndNoBetween(0, sectionAngle / 3);
-      let radius = rndNoBetween(70, 80);
+      let radius = rndNoBetween(60, 80);
       point.origin.x = radius * Math.sin(angleToOrigin);
       point.origin.y = radius * Math.cos(angleToOrigin);
 
