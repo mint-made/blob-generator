@@ -1,5 +1,10 @@
 import { svgElement } from './svgElement.js';
-import { rndNoBetween, toggleGrid, markers } from './utility.js';
+import {
+  rndNoBetween,
+  toggleGrid,
+  markers,
+  translateToFixed,
+} from './utility.js';
 const gsap = window.gsap;
 
 const svg = {
@@ -23,7 +28,7 @@ const svg = {
     // size event listener
     const vertices = document.querySelector('#vertices-slider');
     vertices.addEventListener('input', function () {
-      svg.generateBlob();
+      svg.generateBlob(this.vertices, true);
     });
 
     // Init generating a new SVG blob
@@ -77,16 +82,22 @@ const svg = {
     pathArray.push('Z');
     return pathArray.join(' ');
   },
-  generateBlob(vertices = document.querySelector('#vertices-slider').value) {
+  generateBlob(
+    vertices = document.querySelector('#vertices-slider').value,
+    newNumberOfVertices
+  ) {
     markers.removeAll();
     const canvas = document.querySelector('#canvas-board');
-    const blob = new svg.Blob(vertices);
-    //document.querySelector('#blob-z').setAttributeNS(null, 'd', blob.d);
-    gsap.to('#blob-z', {
-      duration: 1,
-      ease: 'elastic.out(1, 0.3)',
-      attr: { d: blob.d },
-    });
+    let blob = new svg.Blob(vertices);
+    if (newNumberOfVertices) {
+      document.querySelector('#blob-svg').setAttributeNS(null, 'd', blob.d);
+    } else {
+      gsap.to('#blob-svg', {
+        duration: 1,
+        ease: 'elastic.out(1, 0.3)',
+        attr: { d: blob.d },
+      });
+    }
     svg.generateMarkers(blob, canvas);
     markers.toggle();
   },
@@ -124,7 +135,7 @@ const svg = {
     );
   },
   Blob: function (vertices) {
-    this.pointsArray = svg.generateBlobCoords(vertices);
+    this.pointsArray = translateToFixed(svg.generateBlobCoords(vertices), 0);
     this.startCoords = this.pointsArray[this.pointsArray.length - 1];
     this.d = svg.generateBlobPath(this.pointsArray, this.startCoords);
   },
