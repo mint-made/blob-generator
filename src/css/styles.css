@@ -27,13 +27,6 @@
   height: 100%;
 }
 
-.blob {
-  -webkit-transition: 1.5s;
-  -moz-transition: 1.5s;
-  -o-transition: 1.5s;
-  transition: 3s;
-}
-
 .slider {
   -webkit-appearance: none;
   width: 95%;
