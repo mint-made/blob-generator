@@ -1,5 +1,17 @@
 import { svgElement } from './svgElement.js';
 import { rndNoBetween, toggleGrid, markers } from './utility.js';
+const gsap = window.gsap;
+
+const d =
+  'M-49.866857360976226,62.2012197780392 C-36.499557237727274,70.87649487937277 11.72244346619421,74.14018289413147 16.99765207705331,72.70120535284123 C22.27286068791241,71.26222781155099 48.65496986760411,65.69723488068041 59.030182399766844,49.74689535583017 C69.40539493192958,33.79655583097993 77.2014851677449,-7.133188776057008 73.53325657105879,-18.208816659944336 C69.86502797437267,-29.284444543831665 49.569192962419365,-47.19534501418379 36.08555493635391,-54.074677797958614 C22.601916910288452,-60.954010581733435 10.838590364209562,-67.82857615191455 -7.775996064730624,-62.51621031037292 C-26.39058249367081,-57.203844468831285 -47.871380996993906,-72.73719182283679 -60.800731266232006,-51.32990899363036 C-73.7300815354701,-29.922626164423935 -75.01049554391233,2.383288069575297 -71.84156070414237,13.797785164714272 C-68.6726258643724,25.212282259853247 -63.23415748422518,53.525944676705635 -49.866857360976226,62.2012197780392 Z';
+
+document.querySelector('#gsap-btn').addEventListener('click', function () {
+  gsap.to('#blob-z', {
+    duration: 1,
+    ease: 'elastic.out(1, 0.3)',
+    attr: { d: d },
+  });
+});
 
 const svg = {
   vertices: document.querySelector('#vertices-slider').value,
@@ -80,7 +92,12 @@ const svg = {
     markers.removeAll();
     const canvas = document.querySelector('#canvas-board');
     const blob = new svg.Blob(vertices);
-    document.querySelector('#blob-z').setAttributeNS(null, 'd', blob.d);
+    //document.querySelector('#blob-z').setAttributeNS(null, 'd', blob.d);
+    gsap.to('#blob-z', {
+      duration: 1,
+      ease: 'elastic.out(1, 0.3)',
+      attr: { d: blob.d },
+    });
     svg.generateMarkers(blob, canvas);
     markers.toggle();
   },
@@ -124,39 +141,6 @@ const svg = {
   },
 };
 
-// Onload functions
-// const canvas = document.querySelector('#canvas-board');
-// const blob = new svg.Blob(4);
-
-// blob.pointsArray.forEach((point) => {
-//   canvas.appendChild(
-//     svgElement.generateLine(
-//       point.bezier1.x,
-//       point.bezier1.y,
-//       point.bezier2.x,
-//       point.bezier2.y,
-//       'grey'
-//     )
-//   );
-//   canvas.appendChild(
-//     svgElement.generateCircle(point.origin.x, point.origin.y, 'blue')
-//   );
-//   canvas.appendChild(
-//     svgElement.generateCircle(point.bezier1.x, point.bezier1.y, 'orange')
-//   );
-//   canvas.appendChild(
-//     svgElement.generateCircle(point.bezier2.x, point.bezier2.y, 'red')
-//   );
-// });
-
-// canvas.appendChild(
-//   svgElement.generateCircle(
-//     blob.startCoords.origin.x,
-//     blob.startCoords.origin.y,
-//     'green'
-//   )
-// );
-
 // function createPath(d) {
 //   console.log(d);
 //   const path = svgBlob.createSVGElement('path');
@@ -165,8 +149,5 @@ const svg = {
 //   path.setAttributeNS(null, 'transform', 'translate(100 100)');
 //   return blob;
 // }
-
-// const blobby = document.querySelector('#blob-z');
-// blobby.setAttributeNS(null, 'd', blob.d);
 
 svg.initBlob();
