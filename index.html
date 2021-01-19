@@ -9,7 +9,7 @@
     <title>SVG Blob Generator</title>
   </head>
   <body>
-    <div>
+    <div class="dotted-border container">
       <svg viewBox="0 0 200.5 200.5" id="canvas-board">
         <path
           id="blob-z"
@@ -37,6 +37,7 @@
             width="100"
             height="100"
             patternUnits="userSpaceOnUse"
+            class="display-none"
           >
             <rect width="100" height="100" fill="url(#tenthGrid)" />
             <path
@@ -50,7 +51,7 @@
         <rect width="100%" height="100%" fill="url(#grid)" />
       </svg>
     </div>
-    <div class="container">
+    <div class="container dotted-border">
       <div class="flex-space-around">
         <button id="generate-btn" class="btn btn-x">Generate Blob</button>
         <button id="markers-btn" class="btn btn-x" value="false">
@@ -59,13 +60,13 @@
         <button id="grid-btn" class="btn btn-x">Toggle Grid</button>
       </div>
     </div>
-    <div class="container flex-space-around">
+    <div class="container flex-space-around dotted-border">
       <div class="flex-center"><h2>Vertices</h2></div>
       <div class="flex-center">
         <input
           type="range"
           min="3"
-          max="20"
+          max="10"
           value="3"
           class="slider slider-start"
           id="vertices-slider"

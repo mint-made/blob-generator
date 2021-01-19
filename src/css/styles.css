@@ -7,8 +7,10 @@
 .container {
   margin: auto;
   margin-bottom: 5px;
-  width: 500px;
-  height: 50px;
+  max-width: 500px;
+  padding: 10px;
+}
+.dotted-border {
   border: 2px dotted #eeeeee;
   border-radius: 15px;
 }
