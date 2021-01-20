@@ -1,4 +1,4 @@
-## Blob Generator - A web app to randomly create SVG blobs (2020)
+## Blob Generator - Web app to randomly create SVG blobs (2020)
 
 ### Project Context
 
