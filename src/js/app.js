@@ -6,7 +6,7 @@ const svg = {
   colorScheme: {
     start: '#43aa8b',
     blob: '#8A3FFC',
-    origin: '#011627',
+    origin: '#8A3FFC',
     bezier1: '#f46036',
     bezier2: '#9e2a2b',
     bezierLines: 'grey',
@@ -115,7 +115,7 @@ const svg = {
     }
     svg.generateMarkers(blob, canvas);
 
-    //markers.toggle();
+    markers.toggle();
     // Display SVG HTML code for the blob
     document.querySelector('#code-snippet').innerHTML = blob.svgString;
     // Display colored SVG HTML code for the blob

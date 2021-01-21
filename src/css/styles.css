@@ -46,6 +46,7 @@ h2 {
   line-height: 1.65em;
   overflow: scroll;
   font-family: consolas, 'Liberation Mono', courier, monospace;
+  font-weight: 600;
 }
 .height-100 {
   height: 100px;

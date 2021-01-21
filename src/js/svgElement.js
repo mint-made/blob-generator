@@ -19,7 +19,7 @@ const svgElement = {
     }
     return line;
   },
-  generateCircle(x, y, color = 'red', display, r = 1.5) {
+  generateCircle(x, y, color = 'red', display, r = 2.5) {
     // Returns svg <circle> html for DOM insertion
     const circle = this.createElement('circle');
     circle.setAttributeNS(null, 'cx', x);
@@ -46,9 +46,6 @@ const svgElement = {
     ];
 
     // Loop through points array inserting colored spans for the different points
-
-    /////////////////////////////////////////////////////
-    // Generate d value for path element of the blob
     svgStringArray.push(
       `M<span style="background-color:${colorScheme.start}">${startPoint.origin.x},${startPoint.origin.y}</span>`
     );
@@ -68,11 +65,8 @@ const svgElement = {
       );
       bezierOrigin = pointsArray[i];
     }
-    svgStringArray.push('Z');
-    console.log(svgStringArray.join(' '));
-    /////////////////////////////////
 
-    svgStringArray.push(`" transform="translate(100 100)"/&gt;
+    svgStringArray.push(`Z" transform="translate(100 100)"/&gt;
     &lt;/svg&gt;`);
     console.log(pointsArray, colorScheme);
     return svgStringArray.join(' ');
