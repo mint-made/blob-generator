@@ -9,7 +9,6 @@ const gsap = window.gsap;
 
 const svg = {
   vertices: document.querySelector('#vertices-slider').value,
-
   initBlob() {
     // event listener to toggle the visibility of markers
     document
@@ -114,7 +113,8 @@ const svg = {
       });
     }
     svg.generateMarkers(blob, canvas);
-    //markers.toggle();
+
+    markers.toggle();
     // Display SVG HTML code for the blob
     document.querySelector('#code-snippet').value = blob.svgHMTLString;
   },
@@ -158,14 +158,5 @@ const svg = {
     this.svgHMTLString = svgElement.generateBlobHTMLString(this.d);
   },
 };
-
-// function createPath(d) {
-//   console.log(d);
-//   const path = svgBlob.createSVGElement('path');
-//   path.setAttributeNS(null, 'fill', '#8A3FFC');
-//   path.setAttributeNS(null, 'd', d);
-//   path.setAttributeNS(null, 'transform', 'translate(100 100)');
-//   return blob;
-// }
 
 svg.initBlob();
