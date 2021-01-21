@@ -9,6 +9,7 @@ const gsap = window.gsap;
 
 const svg = {
   vertices: document.querySelector('#vertices-slider').value,
+
   initBlob() {
     // event listener to toggle the visibility of markers
     document
@@ -30,7 +31,6 @@ const svg = {
     vertices.addEventListener('input', function () {
       svg.generateBlob(this.vertices, true);
     });
-
     // Init generating a new SVG blob
     this.generateBlob();
   },
@@ -44,14 +44,16 @@ const svg = {
         bezier1: {},
         bezier2: {},
       };
+      const MIN_RADIUS = 60;
+      const MAX_RADIUS = 75;
+      // Bezier line length reduces as n increases to ensure Bezier lines do not cross and cause points in the blob
+      const BEZIER_LENGTH = (2 * Math.PI * MIN_RADIUS) / (2 * n);
       // Randomly generates an origin point within a specific section of the canvas
       let angleToOrigin = i * sectionAngle + rndNoBetween(0, sectionAngle / 3);
-      const radius = rndNoBetween(60, 75);
+      const radius = rndNoBetween(MIN_RADIUS, MAX_RADIUS);
       point.origin.x = radius * Math.sin(angleToOrigin);
       point.origin.y = radius * Math.cos(angleToOrigin);
 
-      // Randomly generate 2 bezier points at a set distance (BEZIER_LENGHT) from the origin point
-      const BEZIER_LENGTH = 30;
       // Angle to origin is increased to generate a point in an adjacent section of the canvas
       angleToOrigin =
         i * sectionAngle +
@@ -112,7 +114,7 @@ const svg = {
       });
     }
     svg.generateMarkers(blob, canvas);
-    markers.toggle();
+    //markers.toggle();
     // Display SVG HTML code for the blob
     document.querySelector('#code-snippet').value = blob.svgHMTLString;
   },
