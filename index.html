@@ -9,7 +9,7 @@
     <title>SVG Blob Generator</title>
   </head>
   <body>
-    <div class="dotted-border container">
+    <div class="dotted-border container" xmlns="http://www.w3.org/2000/svg">
       <svg viewBox="0 0 200.5 200.5" id="canvas-board">
         <path
           id="blob-svg"
@@ -73,6 +73,13 @@
           id="vertices-slider"
         />
       </div>
+    </div>
+    <div class="container dotted-border height-100">
+      <textarea id="code-snippet">
+<svg viewBox="0 0 200.5 200.5" id="canvas-board">
+  <path fill="#8A3FFC" d="" transform="translate(100 100)"/>
+</svg>
+      </textarea>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.0/gsap.min.js"></script>
