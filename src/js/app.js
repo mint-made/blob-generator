@@ -35,8 +35,7 @@ const svg = {
     this.generateBlob();
   },
   generateBlobCoords(n) {
-    // Generates n random points within n sections of the canvas
-    // Returns n number of points in an array
+    // Generates n random point origins within n sections of the canvas each with two bezier points
     const sectionAngle = (2 * Math.PI) / n;
     const pointsArray = [];
     for (let i = 0; i < n; i++) {
@@ -45,22 +44,36 @@ const svg = {
         bezier1: {},
         bezier2: {},
       };
-      // Generate point origin coordinate
+      // Randomly generates an origin point within a specific section of the canvas
       let angleToOrigin = i * sectionAngle + rndNoBetween(0, sectionAngle / 3);
-      let radius = rndNoBetween(60, 80);
+      const radius = rndNoBetween(60, 75);
       point.origin.x = radius * Math.sin(angleToOrigin);
       point.origin.y = radius * Math.cos(angleToOrigin);
 
-      // Randomly generate 1st bezier point
+      // Randomly generate 2 bezier points at a set distance (BEZIER_LENGHT) from the origin point
+      const BEZIER_LENGTH = 30;
+      // Angle to origin is increased to generate a point in an adjacent section of the canvas
       angleToOrigin =
         i * sectionAngle +
         rndNoBetween(sectionAngle / 3, (2 * sectionAngle) / 3);
-      point.bezier1.x = radius * Math.sin(angleToOrigin);
-      point.bezier1.y = radius * Math.cos(angleToOrigin);
+      const sectionPoint = {};
+      sectionPoint.x = radius * Math.sin(angleToOrigin);
+      sectionPoint.y = radius * Math.cos(angleToOrigin);
+      // Distance of bezier point to the point is calculated
+      const distanceFromOrigin = {};
+      distanceFromOrigin.x = sectionPoint.x - point.origin.x;
+      distanceFromOrigin.y = sectionPoint.y - point.origin.y;
+      distanceFromOrigin.hypotenuse = Math.sqrt(
+        Math.pow(distanceFromOrigin.x, 2) + Math.pow(distanceFromOrigin.y, 2)
+      );
+      // Calculate the scale factor to standardise the length of the Bezier lines
+      const scaleFactor = BEZIER_LENGTH / distanceFromOrigin.hypotenuse;
 
-      // Generate 2nd bezier point from the 1st bezier point.
-      point.bezier2.x = point.origin.x + (point.origin.x - point.bezier1.x);
-      point.bezier2.y = point.origin.y + (point.origin.y - point.bezier1.y);
+      // Generate Bezier points (BEZIER_LENGTH) from the point origin, using the scale factor
+      point.bezier1.x = point.origin.x + distanceFromOrigin.x * scaleFactor;
+      point.bezier1.y = point.origin.y + distanceFromOrigin.y * scaleFactor;
+      point.bezier2.x = point.origin.x - distanceFromOrigin.x * scaleFactor;
+      point.bezier2.y = point.origin.y - distanceFromOrigin.y * scaleFactor;
 
       pointsArray.push(point);
     }
