@@ -1,3 +1,6 @@
+* {
+  font-family: Helvetica, 'Trebuchet MS', Verdana, sans-serif;
+}
 #blob-canvas {
   width: 500px;
   height: 300px;
@@ -29,21 +32,32 @@
 h2 {
   margin: 0px;
 }
-#code-snippet {
+#code-snippet,
+#code-snippet-colored {
   width: 95%;
   height: 75%;
-  background-color: rgb(66, 66, 66);
+  background-color: rgb(104, 98, 98);
   border-radius: 0.5rem;
   color: rgb(255, 255, 255);
   padding: 0.75rem;
   border-radius: 0.5rem;
   border-width: 0px;
-  font-size: 1em;
-  line-height: 1.75em;
+  font-size: 0.85em;
+  line-height: 1.65em;
   overflow: scroll;
+  font-family: consolas, 'Liberation Mono', courier, monospace;
 }
 .height-100 {
   height: 100px;
+}
+.m-0 {
+  margin: 0px;
+}
+
+/* Code snippets styles*/
+
+#svg-code-fill {
+  background-color: #8a3ffc;
 }
 
 /* Slider */

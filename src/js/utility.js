@@ -17,10 +17,6 @@ const markers = {
     });
   },
 };
-function toggleGrid() {
-  // Toggles visibility for the grid behind the blob
-  document.querySelector('#grid').classList.toggle('display-none');
-}
 function translateToFixed(pointsArray, decimalPoints) {
   pointsArray.forEach((point) => {
     point.bezier1.x = point.bezier1.x.toFixed(decimalPoints);
@@ -33,4 +29,4 @@ function translateToFixed(pointsArray, decimalPoints) {
   return pointsArray;
 }
 
-export { rndNoBetween, toggleGrid, translateToFixed, markers };
+export { rndNoBetween, translateToFixed, markers };

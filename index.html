@@ -18,38 +18,6 @@
           d=""
           transform="translate(100 100)"
         ></path>
-
-        <defs>
-          <pattern
-            id="tenthGrid"
-            width="10"
-            height="10"
-            patternUnits="userSpaceOnUse"
-          >
-            <path
-              d="M 10 0 L 0 0 0 10"
-              fill="none"
-              stroke="silver"
-              stroke-width="0.5"
-            />
-          </pattern>
-          <pattern
-            id="grid"
-            width="100"
-            height="100"
-            patternUnits="userSpaceOnUse"
-            class="display-none"
-          >
-            <rect width="100" height="100" fill="url(#tenthGrid)" />
-            <path
-              d="M 100 0 L 0 0 0 100"
-              fill="none"
-              stroke="gray"
-              stroke-width="1"
-            />
-          </pattern>
-        </defs>
-        <rect width="100%" height="100%" fill="url(#grid)" />
       </svg>
     </div>
     <div class="container dotted-border">
@@ -58,7 +26,6 @@
         <button id="markers-btn" class="btn btn-x" value="false">
           Toggle markers
         </button>
-        <button id="grid-btn" class="btn btn-x">Toggle Grid</button>
       </div>
     </div>
     <div class="container flex-space-around dotted-border">
@@ -67,19 +34,28 @@
         <input
           type="range"
           min="3"
-          max="10"
-          value="3"
+          max="8"
+          value="5"
           class="slider slider-start"
           id="vertices-slider"
         />
       </div>
     </div>
     <div class="container dotted-border height-100">
-      <textarea id="code-snippet">
-<svg viewBox="0 0 200.5 200.5" id="canvas-board">
-  <path fill="#8A3FFC" d="" transform="translate(100 100)"/>
-</svg>
-      </textarea>
+      <div id="code-snippet">
+        <svg viewBox="0 0 200.5 200.5" id="canvas-board">
+          <path fill="#8A3FFC" d="" transform="translate(100 100)" />
+        </svg>
+      </div>
+    </div>
+    <div class="container dotted-border height-100">
+      <div id="code-snippet-colored">
+        <p class="m-0">&lt;svg viewBox="0 0 200.5 200.5"&gt;</p>
+        &lt;path
+        <span id="svg-code-fill">fill="#8A3FFC"</span>
+        d="" transform="translate(100 100)"/&gt;
+        <p class="m-0">&lt;/svg&gt;</p>
+      </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.0/gsap.min.js"></script>

@@ -33,11 +33,49 @@ const svgElement = {
     }
     return circle;
   },
-  generateBlobHTMLString(pathDValue) {
-    const blobHTMLString = `<svg viewBox="0 0 200 200">
-  <path fill="#8A3FFC" d="${pathDValue}" transform="translate(100 100)"/>
-</svg>`;
+  generateSVGString(pathDValue) {
+    const blobHTMLString = `<p class="m-0">&lt;svg viewBox="0 0 200 200"&gt;</p>
+    &lt;path fill="#8A3FFC" d="${pathDValue}" transform="translate(100 100)"/&gt;
+    <p class="m-0">&lt;/svg&gt;</p>`;
     return blobHTMLString;
+  },
+  generateColoredSVGString(pointsArray, startPoint, colorScheme) {
+    let svgStringArray = [
+      `&lt;svg viewBox="0 0 200 200"&gt;
+    &lt;path fill="<span id="svg-code-fill">${colorScheme.blob}</span>" d="`,
+    ];
+
+    // Loop through points array inserting colored spans for the different points
+
+    /////////////////////////////////////////////////////
+    // Generate d value for path element of the blob
+    svgStringArray.push(
+      `M<span style="background-color:${colorScheme.start}">${startPoint.origin.x},${startPoint.origin.y}</span>`
+    );
+    let bezierOrigin = startPoint;
+    for (let i = 0; i < pointsArray.length; i++) {
+      // Bezier2 point from the current point
+      svgStringArray.push(
+        `C<span style="background-color:${colorScheme.bezier1}">${bezierOrigin.bezier1.x},${bezierOrigin.bezier1.y}</span>`
+      );
+      // Bezier1 Point from the destination point
+      svgStringArray.push(
+        `<span style="background-color:${colorScheme.bezier2}">${pointsArray[i].bezier2.x},${pointsArray[i].bezier2.y}</span>`
+      );
+      // Point of the destination
+      svgStringArray.push(
+        `<span style="background-color:${colorScheme.origin}">${pointsArray[i].origin.x},${pointsArray[i].origin.y}</span>`
+      );
+      bezierOrigin = pointsArray[i];
+    }
+    svgStringArray.push('Z');
+    console.log(svgStringArray.join(' '));
+    /////////////////////////////////
+
+    svgStringArray.push(`" transform="translate(100 100)"/&gt;
+    &lt;/svg&gt;`);
+    console.log(pointsArray, colorScheme);
+    return svgStringArray.join(' ');
   },
 };
 

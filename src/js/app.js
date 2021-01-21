@@ -1,13 +1,16 @@
 import { svgElement } from './svgElement.js';
-import {
-  rndNoBetween,
-  toggleGrid,
-  markers,
-  translateToFixed,
-} from './utility.js';
+import { rndNoBetween, markers, translateToFixed } from './utility.js';
 const gsap = window.gsap;
 
 const svg = {
+  colorScheme: {
+    start: '#43aa8b',
+    blob: '#8A3FFC',
+    origin: '#011627',
+    bezier1: '#f46036',
+    bezier2: '#9e2a2b',
+    bezierLines: 'grey',
+  },
   vertices: document.querySelector('#vertices-slider').value,
   initBlob() {
     // event listener to toggle the visibility of markers
@@ -16,8 +19,6 @@ const svg = {
       .addEventListener('click', function () {
         markers.toggle();
       });
-    // event listener to toggle visibility of the grid
-    document.querySelector('#grid-btn').addEventListener('click', toggleGrid);
     // event listener to generate a new blob
     document
       .querySelector('#generate-btn')
@@ -46,7 +47,7 @@ const svg = {
       const MIN_RADIUS = 60;
       const MAX_RADIUS = 75;
       // Bezier line length reduces as n increases to ensure Bezier lines do not cross and cause points in the blob
-      const BEZIER_LENGTH = (2 * Math.PI * MIN_RADIUS) / (2 * n);
+      const BEZIER_LENGTH = (2 * Math.PI * (MIN_RADIUS * 0.85)) / (2 * n);
       // Randomly generates an origin point within a specific section of the canvas
       let angleToOrigin = i * sectionAngle + rndNoBetween(0, sectionAngle / 3);
       const radius = rndNoBetween(MIN_RADIUS, MAX_RADIUS);
@@ -114,9 +115,12 @@ const svg = {
     }
     svg.generateMarkers(blob, canvas);
 
-    markers.toggle();
+    //markers.toggle();
     // Display SVG HTML code for the blob
-    document.querySelector('#code-snippet').value = blob.svgHMTLString;
+    document.querySelector('#code-snippet').innerHTML = blob.svgString;
+    // Display colored SVG HTML code for the blob
+    document.querySelector('#code-snippet-colored').innerHTML =
+      blob.coloredSVGString;
   },
   generateMarkers(blob, canvas) {
     // generate svg lines for each bezier line
@@ -127,19 +131,31 @@ const svg = {
           point.bezier1.y,
           point.bezier2.x,
           point.bezier2.y,
-          'grey'
+          this.colorScheme.bezierLines
         )
       );
       // generate svg circles for each point origin of the blob
       canvas.appendChild(
-        svgElement.generateCircle(point.origin.x, point.origin.y, 'blue')
+        svgElement.generateCircle(
+          point.origin.x,
+          point.origin.y,
+          this.colorScheme.origin
+        )
       );
       // generate svg circles for each bezier point
       canvas.appendChild(
-        svgElement.generateCircle(point.bezier1.x, point.bezier1.y, 'orange')
+        svgElement.generateCircle(
+          point.bezier1.x,
+          point.bezier1.y,
+          this.colorScheme.bezier1
+        )
       );
       canvas.appendChild(
-        svgElement.generateCircle(point.bezier2.x, point.bezier2.y, 'red')
+        svgElement.generateCircle(
+          point.bezier2.x,
+          point.bezier2.y,
+          this.colorScheme.bezier2
+        )
       );
     });
     // generate an svg circle for the start point of the svg path.
@@ -147,15 +163,20 @@ const svg = {
       svgElement.generateCircle(
         blob.startCoords.origin.x,
         blob.startCoords.origin.y,
-        'green'
+        this.colorScheme.start
       )
     );
   },
-  Blob: function (vertices) {
+  Blob: function (vertices, colorScheme = svg.colorScheme) {
     this.pointsArray = translateToFixed(svg.generateBlobCoords(vertices), 0);
     this.startCoords = this.pointsArray[this.pointsArray.length - 1];
     this.d = svg.generateBlobPath(this.pointsArray, this.startCoords);
-    this.svgHMTLString = svgElement.generateBlobHTMLString(this.d);
+    this.svgString = svgElement.generateSVGString(this.d);
+    this.coloredSVGString = svgElement.generateColoredSVGString(
+      this.pointsArray,
+      this.startCoords,
+      colorScheme
+    );
   },
 };
 
