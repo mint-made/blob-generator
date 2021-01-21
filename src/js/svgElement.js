@@ -34,21 +34,18 @@ const svgElement = {
     return circle;
   },
   generateSVGString(pathDValue) {
-    const blobHTMLString = `<p class="m-0">&lt;svg viewBox="0 0 200 200"&gt;</p>
+    const blobHTMLString = `&lt;svg viewBox="0 0 200 200"&gt;
     &lt;path fill="#8A3FFC" d="${pathDValue}" transform="translate(100 100)"/&gt;
-    <p class="m-0">&lt;/svg&gt;</p>`;
+    &lt;/svg&gt;`;
     return blobHTMLString;
   },
   generateColoredSVGString(pointsArray, startPoint, colorScheme) {
     let svgStringArray = [
       `&lt;svg viewBox="0 0 200 200"&gt;
-    &lt;path fill="<span id="svg-code-fill">${colorScheme.blob}</span>" d="`,
+    &lt;path fill="<span id="svg-code-fill">${colorScheme.blob}</span>" d="M<span style="background-color:${colorScheme.start}">${startPoint.origin.x},${startPoint.origin.y}</span>`,
     ];
 
     // Loop through points array inserting colored spans for the different points
-    svgStringArray.push(
-      `M<span style="background-color:${colorScheme.start}">${startPoint.origin.x},${startPoint.origin.y}</span>`
-    );
     let bezierOrigin = startPoint;
     for (let i = 0; i < pointsArray.length; i++) {
       // Bezier2 point from the current point
