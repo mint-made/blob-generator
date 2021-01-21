@@ -100,6 +100,8 @@ const svg = {
     }
     svg.generateMarkers(blob, canvas);
     markers.toggle();
+    // Display SVG HTML code for the blob
+    document.querySelector('#code-snippet').value = blob.svgHMTLString;
   },
   generateMarkers(blob, canvas) {
     // generate svg lines for each bezier line
@@ -138,6 +140,7 @@ const svg = {
     this.pointsArray = translateToFixed(svg.generateBlobCoords(vertices), 0);
     this.startCoords = this.pointsArray[this.pointsArray.length - 1];
     this.d = svg.generateBlobPath(this.pointsArray, this.startCoords);
+    this.svgHMTLString = svgElement.generateBlobHTMLString(this.d);
   },
 };
 

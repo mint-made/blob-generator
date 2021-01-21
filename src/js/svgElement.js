@@ -33,6 +33,12 @@ const svgElement = {
     }
     return circle;
   },
+  generateBlobHTMLString(pathDValue) {
+    const blobHTMLString = `<svg viewBox="0 0 200 200">
+  <path fill="#8A3FFC" d="${pathDValue}" transform="translate(100 100)"/>
+  </svg>`;
+    return blobHTMLString;
+  },
 };
 
 export { svgElement };
