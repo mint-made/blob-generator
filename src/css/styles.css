@@ -1,6 +1,9 @@
 * {
   font-family: Helvetica, 'Trebuchet MS', Verdana, sans-serif;
 }
+#state {
+  font-weight: 700;
+}
 #blob-canvas {
   width: 500px;
   height: 300px;
@@ -56,10 +59,6 @@ h2 {
 }
 
 /* Code snippets styles*/
-
-#svg-code-fill {
-  background-color: #8a3ffc;
-}
 
 /* Slider */
 .slider {

@@ -1,11 +1,28 @@
 import { svgElement } from './svgElement.js';
-import { rndNoBetween, markers, translateToFixed } from './utility.js';
+import {
+  rndNoBetween,
+  markers,
+  translateToFixed,
+  codeSnippet,
+} from './utility.js';
 const gsap = window.gsap;
+
+const state = {
+  markers: false,
+  toggleMarkers: function () {
+    state.markers = !state.markers;
+    this.update();
+  },
+  update: function () {
+    document.querySelector('#state').innerHTML = state.markers;
+  },
+};
+state.update();
 
 const svg = {
   colorScheme: {
     start: '#43aa8b',
-    blob: '#8A3FFC',
+    blob: '#4895ef',
     origin: '#8A3FFC',
     bezier1: '#f46036',
     bezier2: '#9e2a2b',
@@ -17,7 +34,9 @@ const svg = {
     document
       .querySelector('#markers-btn')
       .addEventListener('click', function () {
+        state.toggleMarkers();
         markers.toggle();
+        codeSnippet.toggle();
       });
     // event listener to generate a new blob
     document
@@ -31,7 +50,7 @@ const svg = {
     vertices.addEventListener('input', function () {
       svg.generateBlob(this.vertices, true);
     });
-    // Init generating a new SVG blob
+    // Init by generating a new SVG blob
     this.generateBlob();
   },
   generateBlobCoords(n) {
@@ -104,8 +123,14 @@ const svg = {
     markers.removeAll();
     const canvas = document.querySelector('#canvas-board');
     let blob = new svg.Blob(vertices);
+
+    /* Checks if the new blob has the same number of vertices as the old blob
+    If so, the blob will be changed without gsap, as gasp transitions glitch out 
+    when changing between different numbers of vertices.
+    */
+    const blobSVG = document.querySelector('#blob-svg');
     if (newNumberOfVertices) {
-      document.querySelector('#blob-svg').setAttributeNS(null, 'd', blob.d);
+      blobSVG.setAttributeNS(null, 'd', blob.d);
     } else {
       gsap.to('#blob-svg', {
         duration: 1,
@@ -113,9 +138,12 @@ const svg = {
         attr: { d: blob.d },
       });
     }
+    blobSVG.setAttributeNS(null, 'fill', this.colorScheme.blob);
+    // Generates the markers and hides them as default.
     svg.generateMarkers(blob, canvas);
-
-    markers.toggle();
+    if (!state.markers) {
+      markers.toggle();
+    }
     // Display SVG HTML code for the blob
     document.querySelector('#code-snippet').innerHTML = blob.svgString;
     // Display colored SVG HTML code for the blob

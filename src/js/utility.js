@@ -17,6 +17,18 @@ const markers = {
     });
   },
 };
+const codeSnippet = {
+  toggle() {
+    // Toggles visibility for the code snippets
+    document
+      .querySelectorAll(
+        '#code-snippet-colored-container, #code-snippet-container'
+      )
+      .forEach((marker) => {
+        marker.classList.toggle('display-none');
+      });
+  },
+};
 function translateToFixed(pointsArray, decimalPoints) {
   pointsArray.forEach((point) => {
     point.bezier1.x = point.bezier1.x.toFixed(decimalPoints);
@@ -29,4 +41,4 @@ function translateToFixed(pointsArray, decimalPoints) {
   return pointsArray;
 }
 
-export { rndNoBetween, translateToFixed, markers };
+export { rndNoBetween, translateToFixed, markers, codeSnippet };

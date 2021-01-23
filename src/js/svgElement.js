@@ -42,7 +42,7 @@ const svgElement = {
   generateColoredSVGString(pointsArray, startPoint, colorScheme) {
     let svgStringArray = [
       `&lt;svg viewBox="0 0 200 200"&gt;
-    &lt;path fill="<span id="svg-code-fill">${colorScheme.blob}</span>" d="M<span style="background-color:${colorScheme.start}">${startPoint.origin.x},${startPoint.origin.y}</span>`,
+    &lt;path fill="<span style="background-color:${colorScheme.blob}">${colorScheme.blob}</span>" d="M<span style="background-color:${colorScheme.start}">${startPoint.origin.x},${startPoint.origin.y}</span>`,
     ];
 
     // Loop through points array inserting colored spans for the different points
