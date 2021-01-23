@@ -1,9 +1,6 @@
 * {
   font-family: Helvetica, 'Trebuchet MS', Verdana, sans-serif;
 }
-#state {
-  font-weight: 700;
-}
 #blob-canvas {
   width: 500px;
   height: 300px;

@@ -65,7 +65,6 @@ const svgElement = {
 
     svgStringArray.push(`Z" transform="translate(100 100)"/&gt;
     &lt;/svg&gt;`);
-    console.log(pointsArray, colorScheme);
     return svgStringArray.join(' ');
   },
 };

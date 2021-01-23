@@ -9,8 +9,17 @@ const gsap = window.gsap;
 
 const state = {
   markers: false,
+  vertices: 5,
   toggleMarkers: function () {
     state.markers = !state.markers;
+  },
+  updateVertices: function () {
+    state.vertices = document.querySelector('#vertices-slider').value;
+    this.updateVerticesDisplay();
+  },
+  updateVerticesDisplay: function () {
+    document.querySelector('#vertices').innerHTML = state.vertices;
+    document.querySelector('#vertices-slider').value = state.vertices;
   },
 };
 
@@ -40,16 +49,18 @@ const svg = {
     document
       .querySelector('#generate-btn')
       .addEventListener('click', function () {
-        svg.generateBlob();
+        svg.generateBlob(state.vertices, false);
       });
 
     // size event listener
-    const vertices = document.querySelector('#vertices-slider');
-    vertices.addEventListener('input', function () {
-      svg.generateBlob(this.vertices, true);
+    const verticesSlider = document.querySelector('#vertices-slider');
+    verticesSlider.addEventListener('input', function () {
+      state.updateVertices();
+      svg.generateBlob(state.vertices, true);
     });
+    state.updateVerticesDisplay();
     // Init by generating a new SVG blob
-    this.generateBlob();
+    this.generateBlob(state.vertices, false);
   },
   generateBlobCoords(n) {
     // Generates n random point origins within n sections of the canvas each with two bezier points
@@ -114,31 +125,21 @@ const svg = {
     pathArray.push('Z');
     return pathArray.join(' ');
   },
-  generateBlob(
-    vertices = document.querySelector('#vertices-slider').value,
-    newNumberOfVertices
-  ) {
+  generateBlob(vertices, newNumberOfVertices) {
+    console.log('generateBlob v=', vertices);
     markers.removeAll();
     const canvas = document.querySelector('#canvas-board');
     let blob = new svg.Blob(vertices);
 
-    /* Checks if the new blob has the same number of vertices as the old blob
-    If so, the blob will be changed without gsap, as gasp transitions glitch out 
-    when changing between different numbers of vertices.
-    */
-    const blobSVG = document.querySelector('#blob-svg');
-    if (newNumberOfVertices) {
-      blobSVG.setAttributeNS(null, 'd', blob.d);
-    } else {
-      gsap.to('#blob-svg', {
-        duration: 1,
-        ease: 'elastic.out(1, 0.3)',
-        attr: { d: blob.d },
-      });
-    }
-    blobSVG.setAttributeNS(null, 'fill', this.colorScheme.blob);
+    gsap.to('#blob-svg', {
+      duration: 0.75,
+      ease: 'elastic.out',
+      attr: { d: blob.d },
+    });
+
     // Generates the markers and hides them as default.
     svg.generateMarkers(blob, canvas);
+    console.log('generateMarkers v=', blob.pointsArray.length);
     if (!state.markers) {
       markers.toggle();
     }
