@@ -33,9 +33,9 @@ const svgElement = {
     }
     return circle;
   },
-  generateSVGString(pathDValue) {
+  generateSVGString(pathDValue, colorScheme) {
     const blobHTMLString = `&lt;svg viewBox="0 0 200 200"&gt;
-    &lt;path fill="#8A3FFC" d="${pathDValue}" transform="translate(100 100)"/&gt;
+    &lt;path fill="${colorScheme.blob}" d="${pathDValue}" transform="translate(100 100)"/&gt;
     &lt;/svg&gt;`;
     return blobHTMLString;
   },

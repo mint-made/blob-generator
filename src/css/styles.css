@@ -48,6 +48,10 @@ h2 {
   font-family: consolas, 'Liberation Mono', courier, monospace;
   font-weight: 600;
 }
+#code-snippet-colored span {
+  font-family: consolas, 'Liberation Mono', courier, monospace;
+  font-weight: 600;
+}
 .height-100 {
   height: 100px;
 }

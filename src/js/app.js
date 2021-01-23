@@ -18,7 +18,6 @@ const state = {
     this.updateVerticesDisplay();
   },
   updateVerticesDisplay: function () {
-    document.querySelector('#vertices').innerHTML = state.vertices;
     document.querySelector('#vertices-slider').value = state.vertices;
   },
 };
@@ -198,7 +197,7 @@ const svg = {
     this.pointsArray = translateToFixed(svg.generateBlobCoords(vertices), 0);
     this.startCoords = this.pointsArray[this.pointsArray.length - 1];
     this.d = svg.generateBlobPath(this.pointsArray, this.startCoords);
-    this.svgString = svgElement.generateSVGString(this.d);
+    this.svgString = svgElement.generateSVGString(this.d, colorScheme);
     this.coloredSVGString = svgElement.generateColoredSVGString(
       this.pointsArray,
       this.startCoords,
