@@ -11,13 +11,8 @@ const state = {
   markers: false,
   toggleMarkers: function () {
     state.markers = !state.markers;
-    this.update();
-  },
-  update: function () {
-    document.querySelector('#state').innerHTML = state.markers;
   },
 };
-state.update();
 
 const svg = {
   colorScheme: {
@@ -34,8 +29,11 @@ const svg = {
     document
       .querySelector('#markers-btn')
       .addEventListener('click', function () {
+        // Updates the state of the markers between true and false
         state.toggleMarkers();
+        // Toggles the display of the markers using the display-none class
         markers.toggle();
+        // Toggles the display of both codesnippets, showing only one at a time.
         codeSnippet.toggle();
       });
     // event listener to generate a new blob
@@ -144,9 +142,9 @@ const svg = {
     if (!state.markers) {
       markers.toggle();
     }
-    // Display SVG HTML code for the blob
+    // Update SVG HTML code for the blob
     document.querySelector('#code-snippet').innerHTML = blob.svgString;
-    // Display colored SVG HTML code for the blob
+    // Update colored SVG HTML code for the blob
     document.querySelector('#code-snippet-colored').innerHTML =
       blob.coloredSVGString;
   },
