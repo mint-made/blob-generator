@@ -2,7 +2,7 @@
 
 ### Project Context
 
-Instead of drawing out blobs for use in design and web development, this web app can randomly generate a SVG blob for the user, displaying the code for them to copy and use elsewhere. This project was inspired by the [Blob Maker](https://www.blobmaker.app/) by [creative labs](https://zcreativelabs.com/).
+Instead of drawing out blobs for use in design and web development, this web app can randomly generate a SVG blob for the user, with a specific number of verticeses, displaying the code for them to copy and use elsewhere. This project was inspired by the [Blob Maker](https://www.blobmaker.app/) by [creative labs](https://zcreativelabs.com/).
 
 ### Project Overview
 
